@@ -17,7 +17,7 @@ len=${#xleft[@]}
 for i in `seq 1 $len`
 do
     echo $i >> index.txt
-    qsub qsub_dia.sh ${xleft[$i-1]} 
+    qsub ~/THE-Spectrum-Generator-Class/src/qsub_dia.sh ${xleft[$i-1]} 
     # qsub qsub_single.sh ${xleft[$i-1]} 
    # sleep 5m
 #    bash justecho.sh ${xleft[$i-1]} ${xright[$i-1]}
