@@ -4,4 +4,4 @@
 #$ -cwd
 #$ -pe openmp 46
 
-python2 diatomic_impurity_traj.py $1
+python2 ~/THE-Spectrum-Generator-Class/src/diatomic_white_parallel.py $1

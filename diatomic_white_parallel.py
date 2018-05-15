@@ -76,7 +76,7 @@ def diatomic_traj(n):
 
         if x1[tstep+1] < xL[tstep+1] or x2[tstep+1] > xR[tstep+1] or \
                 x1[tstep+1] > x2[tstep+1]:
-            f1 = open('wrong.log', 'w')
+            f1 = open('wrong-dia-' + str(m1) + time.strftime('-%m-%d-%H%M%S.txt'), 'w')
             print >> f1, 'error: position disorder, exiting...', omega1, \
                 xL[tstep+1], x1[tstep+1], x2[tstep+1], xR[tstep+1] 
             f1.close()
