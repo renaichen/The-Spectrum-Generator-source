@@ -95,6 +95,15 @@ def diatomic_singletraj(n):
         fLt[tstep] = fL
         fRt[tstep] = fR
 
+
+        if x1[tstep+1] < xL[tstep+1] or x2[tstep+1] > xR[tstep+1] or \
+                x1[tstep+1] > x2[tstep+1]:
+            f1 = open('wrong-dia-' + str(m1) + time.strftime('-%m-%d-%H%M%S.txt'), 'w')
+            print >> f1, 'error: position disorder, exiting...', omega1, \
+                xL[tstep+1], x1[tstep+1], x2[tstep+1], xR[tstep+1] 
+            f1.close()
+            break
+
         # f2old = 48 * epsilon * sigma**12 / (x1[tstep+1]-x2[tstep+1])**13 \
         #             - 24 * epsilon * sigma**6/(x1[tstep+1]-x2[tstep+1])**7
         # f2old = 10/(x1[tstep+1]-x2[tstep+1])
