@@ -129,8 +129,8 @@ if __name__ == '__main__':
     AR = 1 * 1e6  #  1eV = 23kcal/mol
     alphaR = 5e0
     kB = 0.001987
-    TL = 450
-    TR = 250
+    TL = 270
+    TR = 200
     gammaL = 1.076581 / (m1 / 2)
     gammaR = 1.076581 / (m1 / 2)
 

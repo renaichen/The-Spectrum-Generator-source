@@ -1,5 +1,5 @@
 #! /bin/bash
-#$ -N Renai-multi-diatomic-test
+#$ -N Renai-diatomic-multi
 #$ -V
 #$ -cwd
 #$ -pe openmp 46

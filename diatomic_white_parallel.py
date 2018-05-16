@@ -76,7 +76,7 @@ def diatomic_traj(n):
 
         if x1[tstep+1] < xL[tstep+1] or x2[tstep+1] > xR[tstep+1] or \
                 x1[tstep+1] > x2[tstep+1]:
-            f1 = open('wrong-dia-' + str(m1) + time.strftime('-%m-%d-%H%M%S.txt'), 'w')
+            f1 = open('wrong-dia-' + str(omega1) + time.strftime('-%m-%d-%H%M%S.txt'), 'w')
             print >> f1, 'error: position disorder, exiting...', omega1, \
                 xL[tstep+1], x1[tstep+1], x2[tstep+1], xR[tstep+1] 
             f1.close()
@@ -140,12 +140,14 @@ if __name__ == '__main__':
     powerRsqtraj = np.zeros(tsize)
     power12sqtraj = np.zeros(tsize)
 
-    m1 = float(sys.argv[1]) / 2.
-    m2 = float(sys.argv[1]) / 2.
+    # m1 = float(sys.argv[1]) / 2.
+    # m2 = float(sys.argv[1]) / 2.
+    m1 = 24 / 2.
+    m2 = 24 / 2.
     mu = m1 * m2 / (m1 + m2)
     mL = 32
     mR = 32
-    omega1 = 0.2
+    omega1 = float(sys.argv[1])
     k12 = mu * omega1**2
     # x10 = 50
     x012 = 2.0
@@ -157,12 +159,12 @@ if __name__ == '__main__':
     AR = 1 * 1e6  #  1eV = 23kcal/mol
     alphaR = 5e0
     kB = 0.001987
-    TL = 450
-    TR = 250
+    TL = 270
+    TR = 200
     gammaL = 1.076581 / m1
     gammaR = 1.076581 / m1
 
-    traj = 40
+    traj = 1000
 
     p = Pool(processes=SLOTS)# pass the number of core to the Pool so that I know how many cores I can use.
 
@@ -239,7 +241,7 @@ if __name__ == '__main__':
     print 'run time is: ', run_time / 60.
 
 ##-----------write-data-out---------
-filename = 'diatomic-' + str(m1) + time.strftime('-%m-%d-%H%M%S.txt')
+filename = 'diatomic-' + str(omega1) + time.strftime('-%m-%d-%H%M%S.txt')
 with open(filename, "w") as f:
     f.write("time spent in minutes: %f\n" %(run_time/60))
     f.write("AL = %f, alphaL = %f\n" %(AL, alphaL))
