@@ -10,14 +10,6 @@ from multiprocessing import Pool
 
 def diatomic_traj(n):
 
-    # x1 = np.zeros(tsize)
-    # x2 = np.zeros(tsize)
-    # xL = np.zeros(tsize)
-    # xR = np.zeros(tsize)
-
-    # v1 = np.zeros(tsize)
-    # v2 = np.zeros(tsize)
-
     K = 0.0
     K1 = 0.0
     K2 = 0.0
@@ -52,15 +44,6 @@ def diatomic_traj(n):
 
         xiL = random.gauss(0, 1)
         xiR = random.gauss(0, 1)
-
-# #-----------EOM integrator: using the velocity verlet algorithm-----------------------
-        # x1[tstep+1] = x1[tstep] + v1[tstep]*dt + (0.5/m1)*f1old*dt**2
-        # x2[tstep+1] = x2[tstep] + v2[tstep]*dt + (0.5/m2)*f2old*dt**2
-        # xL[tstep+1] = xL[0]
-        # xR[tstep+1] = xR[0]
-        # f1new = k12*(x2[tstep+1]-x1[tstep+1]-x012)
-        # f2new = -f1new
-        # fint[tstep + 1] = f1new
 
 # #-----------EOM integrator: using the velocity verlet algorithm-----------------------
         x1new = x1old + v1old*dt + (0.5/m1)*f1old*dt**2
@@ -120,21 +103,13 @@ if __name__ == '__main__':
     dt = 0.001
     tArray = np.arange(tBegin, tEnd, dt)
     tsize = len(tArray)
-    # Ktraj = 0.0
-    # K1traj = 0.0
-    # K2traj = 0.0
-    # powerLtraj = 0.0
-    # powerRtraj = 0.0
-    # power12traj = 0.0
+    halftsize = tsize / 2
     Ktraj = np.zeros(traj)
     K1traj = np.zeros(traj)
     K2traj = np.zeros(traj)
     powerLtraj = np.zeros(traj)
     powerRtraj = np.zeros(traj)
     power12traj = np.zeros(traj)
-    # powerLsqtraj = np.zeros(tsize)
-    # powerRsqtraj = np.zeros(tsize)
-    # power12sqtraj = np.zeros(tsize)
 
     # m1 = float(sys.argv[1]) / 2.
     # m2 = float(sys.argv[1]) / 2.
@@ -174,96 +149,58 @@ if __name__ == '__main__':
 ## seem all good for indexing the trajectory number, but at the safe side
 ## using i++ is chosen here.
     i = 0
-    for K1, K2, K, powerL, powerR, power12 in p.map(diatomic_traj, range(traj)):
+    for K1, K2, K, powerL, power12, powerR in p.map(diatomic_traj, range(traj)):
     # for i, (K1, K2, K, powerL, power12, powerR) in enumerate(p.map(diatomic_traj, range(traj))):
-        # K1traj = K1
-        # K2traj = K2
-        # Ktraj = K
-        # powerLtraj = powerL
-        # power12traj = power12
-        # powerRtraj = powerR
-        K1traj[i] = K1
-        K2traj[i] = K2
-        Ktraj[i] = K
-        powerLtraj[i] = powerL
-        power12traj[i] = power12
-        powerRtraj[i] = powerR
-        # powerLsqtraj += powerLsq
-        # power12sqtraj += power12sq
-        # powerRsqtraj += powerRsq
+        K1traj[i] = K1 / halftsize
+        K2traj[i] = K2 / halftsize
+        Ktraj[i] = K / halftsize
+        powerLtraj[i] = powerL / halftsize
+        power12traj[i] = power12 / halftsize
+        powerRtraj[i] = powerR / halftsize
         i += 1
 
     p.close()
     p.join()
-    print 'traj30=', powerLtraj[30]
 
-    # Utraj /= traj
-    # Ktraj /= traj
-    # K1traj /= traj
-    # K2traj /= traj
-    # powerLtraj /= traj
-    # power12traj /= traj
-    # powerRtraj /= traj
-    # powerLsqtraj /= traj
-    # power12sqtraj /= traj
-    # powerRsqtraj /= traj
     ##----------
-    # NN = tsize / 2
-    # K1steady = K1traj[NN:]
-    # K1steady = np.mean(K1steady.reshape(-1, 500), axis=1)  # a very neat answer from StackOverflow
-    # T1aver = np.mean(K1steady) * 2 / kB
-    # T1std = np.std(K1steady) * 2 / kB
-    # print 'T1 = ', T1aver, T1std
-    # K2steady = K2traj[NN:]
-    # K2steady = np.mean(K2steady.reshape(-1, 500), axis=1)  # a very neat answer from StackOverflow
-    # T2aver = np.mean(K2steady) * 2 / kB
-    # T2std = np.std(K2steady) * 2 / kB
-    # print 'T2 = ', T2aver, T2std
+    T1aver = np.mean(K1traj) * 2 / kB
+    T1std = np.std(K1traj) * 2 / kB
+    print 'T1 = ', T1aver, T1std
+    T2aver = np.mean(K2traj) * 2 / kB
+    T2std = np.std(K2traj) * 2 / kB
+    print 'T2 = ', T2aver, T2std
 
 
-    # PsteadyL = powerLtraj[NN:]
-    # PsteadyL = np.mean(PsteadyL.reshape(-1, 500), axis=1)  # a very neat answer from StackOverflow
-    # # to average over a length of numbers
-    # PsqsteadyL = powerLsqtraj[NN:]
-    # JLaver = np.mean(PsteadyL)
-    # JLstd = np.std(PsteadyL)
-    # JLstd_true = np.sqrt(np.mean(PsqsteadyL) - JLaver**2)
-    # print 'heatL = ', JLaver, JLstd, JLstd_true
-    # Psteady12 = power12traj[NN:]
-    # Psteady12 = np.mean(Psteady12.reshape(-1, 500), axis=1)
-    # Psqsteady12 = power12sqtraj[NN:]
-    # J12aver = np.mean(Psteady12)
-    # J12std = np.std(Psteady12)
-    # J12std_true = np.sqrt(np.mean(Psqsteady12) - J12aver**2)
-    # print 'heat12 = ', J12aver, J12std, J12std_true
-    # PsteadyR = powerRtraj[NN:]
-    # PsteadyR = np.mean(PsteadyR.reshape(-1, 500), axis=1)
-    # PsqsteadyR = powerRsqtraj[NN:]
-    # JRaver = np.mean(PsteadyR)
-    # JRstd = np.std(PsteadyR)
-    # JRstd_true = np.sqrt(np.mean(PsqsteadyR) - JRaver**2)
-    # print 'heatR = ', JRaver, JRstd, JRstd_true
+    JLaver = np.mean(powerLtraj)
+    JLstd = np.std(powerLtraj)
+    print 'heatL = ', JLaver, JLstd
+    J12aver = np.mean(power12traj)
+    J12std = np.std(power12traj)
+    print 'heat12 = ', J12aver, J12std
+    JRaver = np.mean(powerRtraj)
+    JRstd = np.std(powerRtraj)
+    print 'heatR = ', JRaver, JRstd
 
     run_time = time.time() - start_time
     print 'run time is: ', run_time / 60.
 
 ##-----------write-data-out---------
-# filename = 'diatomic-' + str(omega1) + '-' + str(traj) + time.strftime('-%m-%d-%H%M%S.txt')
-# with open(filename, "w") as f:
-#     f.write("time spent in minutes: %f\n" %(run_time/60))
-#     f.write("AL = %f, alphaL = %f\n" %(AL, alphaL))
-#     f.write("mass = %f\n" %(m1))
-#     f.write("omega_r = %f\n" %(omega1))
-#     f.write("equilibrium length (bond length): %f\n" %(x012))
-#     f.write("trajectory number: %d\n" %(traj))
-#     f.write("time_step: %f\n" %(dt))
-#     f.write("number of steps: %d\n" %(tsize/2))
-#     f.write("TL = %d, TR = %d\n" %(TL, TR))
-#     f.write("T1 = %f, T1std = %f\n" %(T1aver, T1std))
-#     f.write("T2 = %f, T2std = %f\n" %(T2aver, T2std))
-#     f.write("JL = %f, STDJL = %f, STDJL_r = %f\n" %(JLaver, JLstd, JLstd_true))
-#     f.write("J12 = %f, STDJ12 = %f, STDJ12_r = %f\n" %(J12aver, J12std, J12std_true))
-#     f.write("JR = %f, STDJR = %f, STDJR_r = %f\n" %(JRaver, JRstd, JRstd_true))
+filename = 'diatomic-' + str(omega1) + '-' + str(traj) + time.strftime('-%m-%d-%H%M%S.txt')
+with open(filename, "w") as f:
+    f.write("time spent in minutes: %f\n" %(run_time/60))
+    # f.write("AL = %f, alphaL = %f\n" %(AL, alphaL))
+    f.write("mass = %f\n" %(m1))
+    f.write("omega_r = %f\n" %(omega1))
+    # f.write("equilibrium length (bond length): %f\n" %(x012))
+    f.write("trajectory number: %d\n" %(traj))
+    f.write("time_step: %f\n" %(dt))
+    f.write("number of steps: %d\n" %(tsize/2))
+    f.write("TL = %d, TR = %d\n" %(TL, TR))
+    f.write("T1 = %f, T1std = %f\n" %(T1aver, T1std))
+    f.write("T2 = %f, T2std = %f\n" %(T2aver, T2std))
+    f.write("JL = %f, STDJL = %f\n" %(JLaver, JLstd))
+    f.write("J12 = %f, STDJ12 = %f\n" %(J12aver, J12std))
+    f.write("JR = %f, STDJR = %f\n" %(JRaver, JRstd))
 
 # filename2 = 'heatflux-diatomic-' + str(m1) + time.strftime('-%m-%d-%H%M%S.txt')
 # np.savetxt(filename2, np.c_[PsteadyL, Psteady12, PsteadyR])
