@@ -5,11 +5,11 @@ xleft=()
 # do
 #     xleft+=($i)
 # done
-for i in `seq 0.7 0.1 1.9`
-do
-    xleft+=($i)
-done
-# xleft=1.2
+# for i in `seq 0.7 0.1 1.9`
+# do
+#     xleft+=($i)
+# done
+xleft=1.2
 
 # xright=()
 # for j in `seq 54.5 -0.1 53.3`

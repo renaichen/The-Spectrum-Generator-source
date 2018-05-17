@@ -151,9 +151,6 @@ if __name__ == '__main__':
     k12 = mu * omega1**2
     # x10 = 50
     x012 = 2.0
-    traj = 0
-    epsilon = 0.3
-    sigma = 3.5
     AL = 1 * 1e6  #  1eV = 23kcal/mol
     alphaL = 5e0
     AR = 1 * 1e6  #  1eV = 23kcal/mol

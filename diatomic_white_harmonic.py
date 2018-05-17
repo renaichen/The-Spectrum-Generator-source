@@ -177,7 +177,7 @@ if __name__ == '__main__':
     # gammaL = 3 * omegaL**4 * np.pi / (2 * m1 * mL * omegaD**3)
     # gammaR = 3 * omegaR**4 * np.pi / (2 * m2 * mR * omegaD**3)
 
-    traj = 40
+    traj = 1000
 
     p = Pool(processes=SLOTS)# pass the number of core to the Pool so that I know how many cores I can use.
 
@@ -254,7 +254,7 @@ if __name__ == '__main__':
     print 'run time is: ', run_time / 60.
 
 ##-----------write-data-out---------
-filename = 'diatomic-' + str(omega1) + time.strftime('-%m-%d-%H%M%S.txt')
+filename = 'diatomic-' + str(omega1) + '-' + str(traj) + time.strftime('-%m-%d-%H%M%S.txt')
 with open(filename, "w") as f:
     f.write("time spent in minutes: %f\n" %(run_time/60))
     f.write("AL = %f, alphaL = %f\n" %(AL, alphaL))
