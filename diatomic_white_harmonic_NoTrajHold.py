@@ -82,9 +82,9 @@ def diatomic_traj(n):
                     xiR * 0.5 * (v2old + v2new)
             power12 += - 0.5 * fint * (v2new + v1new)
 
-        K1 += 0.5 * m1 * v1old ** 2
-        K2 += 0.5 * m2 * v2old ** 2
-        K = K1 + K2
+            K1 += 0.5 * m1 * v1old ** 2
+            K2 += 0.5 * m2 * v2old ** 2
+            K = K1 + K2
 
         tstep += 1
 
@@ -96,7 +96,7 @@ if __name__ == '__main__':
 
     start_time = time.time()
 
-    traj = 40
+    traj = 2000
 
     tBegin = 0.
     tEnd = 1000
