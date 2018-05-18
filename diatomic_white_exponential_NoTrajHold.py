@@ -51,11 +51,11 @@ def diatomic_traj(n):
         f1new = k12*(x2new-x1new-x012)
         f2new = -f1new
         fint = f1new
-        # fL = - AL * alphaL * np.exp(-alphaL * (x1[tstep + 1] - xL[tstep + 1]))
-        # fR = AR * alphaR * np.exp(-alphaR * (xR[tstep + 1] - x2[tstep + 1]))
+        fL = - AL * alphaL * np.exp(-alphaL * (x1new - xL))
+        fR = AR * alphaR * np.exp(-alphaR * (xR - x2new))
 
-        fL = k1l * (x1new - xL - x1l)
-        fR = - k2r * (xR - x2new - x2r)
+        # fL = k1l * (x1new - xL - x1l)
+        # fR = - k2r * (xR - x2new - x2r)
 
         if x1new < xL or x2new > xR or \
                 x1new > x2new:

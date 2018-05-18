@@ -78,11 +78,11 @@ if __name__ == '__main__':
 
     start_time = time.time()
 
-    traj = 200
+    traj = 3000
 
     tBegin = 0.
-    tEnd = 1000
-    dt = 0.001
+    tEnd = 10000
+    dt = 0.01
     tArray = np.arange(tBegin, tEnd, dt)
     tsize = len(tArray)
     halftsize = tsize / 2
@@ -150,7 +150,7 @@ if __name__ == '__main__':
     print 'run time is: ', run_time / 60.
 
 ##-----------write-data-out---------
-filename = 'center' + str(traj) + time.strftime('-%m-%d-%H%M%S.txt')
+filename = 'center-' + str(traj) + time.strftime('-%m-%d-%H%M%S.txt')
 with open(filename, "w") as f:
     f.write("time spent in minutes: %f\n" %(run_time/60))
     # f.write("AL = %f, alphaL = %f\n" %(AL, alphaL))
