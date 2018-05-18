@@ -96,7 +96,7 @@ if __name__ == '__main__':
 
     start_time = time.time()
 
-    traj = 3000
+    traj = 4000
 
     tBegin = 0.
     tEnd = 10000
@@ -192,6 +192,7 @@ with open(filename, "w") as f:
     # f.write("AL = %f, alphaL = %f\n" %(AL, alphaL))
     f.write("mass = %f\n" %(m1))
     f.write("omega_r = %f\n" %(omega1))
+    f.write("gamma_L = %f\n" %(gammaL))
     # f.write("equilibrium length (bond length): %f\n" %(x012))
     f.write("trajectory number: %d\n" %(traj))
     f.write("time_step: %f\n" %(dt))

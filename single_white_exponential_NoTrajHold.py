@@ -44,7 +44,7 @@ def diatomic_traj(n):
         # fR = - k1r * (xR - x1new - halfd - x1r)
 
         if x1new < xL or x1new > xR:
-            f1 = open('wrong-dia-' + time.strftime('-%m-%d-%H%M%S.txt'), 'w')
+            f1 = open('wrong-single-' + time.strftime('-%m-%d-%H%M%S.txt'), 'w')
             print >> f1, 'error: position disorder, exiting...', omega1, \
                 xL, x1new, xR 
             f1.close()
@@ -78,10 +78,10 @@ if __name__ == '__main__':
 
     start_time = time.time()
 
-    traj = 3000
+    traj = 30
 
     tBegin = 0.
-    tEnd = 10000
+    tEnd = 1000
     dt = 0.01
     tArray = np.arange(tBegin, tEnd, dt)
     tsize = len(tArray)

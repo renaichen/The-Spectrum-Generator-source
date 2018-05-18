@@ -96,7 +96,7 @@ if __name__ == '__main__':
 
     start_time = time.time()
 
-    traj = 3000
+    traj = 4000
 
     tBegin = 0.
     tEnd = 10000
@@ -138,8 +138,8 @@ if __name__ == '__main__':
     TR = 200
     gammaL = 0.1
     gammaR = 0.1
-    # gammaL = 3 * omegaL**4 * np.pi / (2 * m1 * mL * omegaD**3)
-    # gammaR = 3 * omegaR**4 * np.pi / (2 * m2 * mR * omegaD**3)
+    # gammaL = 0.71772
+    # gammaR = 0.71772
 
 
     p = Pool(processes=SLOTS)# pass the number of core to the Pool so that I know how many cores I can use.
@@ -192,6 +192,7 @@ with open(filename, "w") as f:
     # f.write("AL = %f, alphaL = %f\n" %(AL, alphaL))
     f.write("mass = %f\n" %(m1))
     f.write("omega_r = %f\n" %(omega1))
+    f.write("gammaL = %f\n" %(gammaL))
     # f.write("equilibrium length (bond length): %f\n" %(x012))
     f.write("trajectory number: %d\n" %(traj))
     f.write("time_step: %f\n" %(dt))
