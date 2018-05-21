@@ -92,6 +92,15 @@ def diatomic_singletraj(n):
 
         fL = - AL * alphaL * np.exp(-alphaL * (x1[tstep + 1] - xL[tstep + 1]))
         fR = AR * alphaR * np.exp(-alphaR * (xR[tstep + 1] - x2[tstep + 1]))
+
+        if x1[tstep+1] < xL[tstep+1] or x2[tstep+1] > xR[tstep+1] or \
+                x1[tstep+1] > x2[tstep+1]:
+            f1 = open('wrong-dia-' + str(omega1) + time.strftime('-%m-%d-%H%M%S.txt'), 'w')
+            print >> f1, 'error: position disorder, exiting...', omega1, \
+                xL[tstep+1], x1[tstep+1], x2[tstep+1], xR[tstep+1] 
+            f1.close()
+            break
+
         fLt[tstep] = fL
         fRt[tstep] = fR
 
@@ -292,7 +301,7 @@ if __name__=='__main__':
         f.write("J12 = %f, STDJ12 = %f, STDJ12_r = %f\n" %(J12aver, J12std, J12std_true))
         f.write("JR = %f, STDJR = %f, STDJR_r = %f\n" %(JRaver, JRstd, JRstd_true))
 
-    #filename2 = time.strftime('heatflux-diatomic-%m-%d-%H%M%S.txt')
-    filename2 = 'heatflux-diatomic-' + str(m1) + time.strftime('-%m-%d-%H%M%S.txt')
-    np.savetxt(filename2, np.c_[PsteadyL, Psteady12, PsteadyR])
+    # #filename2 = time.strftime('heatflux-diatomic-%m-%d-%H%M%S.txt')
+    # filename2 = 'heatflux-diatomic-' + str(m1) + time.strftime('-%m-%d-%H%M%S.txt')
+    # np.savetxt(filename2, np.c_[PsteadyL, Psteady12, PsteadyR])
 
