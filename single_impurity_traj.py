@@ -29,34 +29,18 @@ def single_singletraj(n):
                            )
     rand_arrayR = sp_objR.give_me_random_series(dt)
 
-    x1 = np.zeros(tsize)
-    xL = np.zeros(tsize)
-    xR = np.zeros(tsize)
+    K1 = 0.0
 
-    v1 = np.zeros(tsize)
+    powerL = 0.0
+    powerR = 0.0
 
-    U = np.zeros(tsize)
-    K = np.zeros(tsize)
-    K1 = np.zeros(tsize)
-    UintL = np.zeros(tsize)
-    UintR = np.zeros(tsize)
+    xLeq = 46.
+    x1new = 50.
+    xReq = 54.
+    xLnew = xLeq
+    xRnew = xReq
 
-    fLt = np.zeros(tsize)
-    fRt = np.zeros(tsize)
-    powerL = np.zeros(tsize)
-    powerR = np.zeros(tsize)
-    powerLsq = np.zeros(tsize)
-    powerRsq = np.zeros(tsize)
-
-    damperL = np.zeros(tsize)
-    damperR = np.zeros(tsize)
-
-    xL[0] = 46
-    x1[0] = 50.
-    xR[0] = 54
-    halfd = 1.
-
-    v1[0] = 0.0
+    v1new = 0.0
 
     f1new = 0.0
     fL = 0.0
@@ -66,56 +50,54 @@ def single_singletraj(n):
     while tstep < (tsize-1):
 #
         f1old = f1new
-        damperL[tstep] = sp_objL.damp_getter(fL)
-        damperR[tstep] = sp_objR.damp_getter(fR)
+        fLold = fL
+        fRold = fR
+        x1old = x1new
+        xLold = xLnew
+        xRold = xRnew
+        v1old = v1new
+        damperL = sp_objL.damp_getter(fL)
+        damperR = sp_objR.damp_getter(fR)
 
 # #-----------EOM integrator: using the velocity verlet algorithm-----------------------
-        x1[tstep+1] = x1[tstep] + v1[tstep]*dt + (0.5/m1)*f1old*dt**2
-        xL[tstep+1] = xL[0] + damperL[tstep] + rand_arrayL[tstep]
-        xR[tstep+1] = xR[0] + damperR[tstep] + rand_arrayR[tstep]
-        # xL[tstep + 1] = xL[0] + rand_arrayL[tstep]
-        # xR[tstep + 1] = xR[0] + rand_arrayR[tstep]
+        x1new = x1old + v1old*dt + (0.5/m1)*f1old*dt**2
+        xLnew = xLeq + damperL + rand_arrayL[tstep]
+        xRnew = xReq + damperR + rand_arrayR[tstep]
 
-        fL = - AL * alphaL * np.exp(-alphaL * (x1[tstep + 1] - halfd - xL[tstep + 1]))
-        fR = AR * alphaR * np.exp(-alphaR * (xR[tstep + 1] - halfd - x1[tstep + 1]))
+        fL = - AL * alphaL * np.exp(-alphaL * (x1new - halfd - xLnew))
+        fR = AR * alphaR * np.exp(-alphaR * (xRnew - -halfd - x1new))
 
-        if x1[tstep+1] < xL[tstep+1] or x1[tstep+1] > xR[tstep+1]:
-            break
+        # fL = k1l * (x1new - xL - x1l)
+        # fR = - k2r * (xR - x2new - x2r)
 
-        if x1[tstep+1] < xL[tstep+1] or x1[tstep+1] > xR[tstep+1]:
-            f1 = open('wrong-single-' + str(m1) + time.strftime('-%m-%d-%H%M%S.txt'), 'w')
-            print >> f1, 'error: position disorder, exiting...', \
-                xL[tstep+1], x1[tstep+1], xR[tstep+1] 
+        # fL = - AL * alphaL * np.exp(-alphaL * (x1[tstep + 1] - halfd - xL[tstep + 1]))
+        # fR = AR * alphaR * np.exp(-alphaR * (xR[tstep + 1] - halfd - x1[tstep + 1]))
+
+        if x1new < xLnew or x1new > xRnew:
+            f1 = open('wrong-single-' + time.strftime('-%m-%d-%H%M%S.txt'), 'w')
+            print >> f1, 'error: position disorder, exiting...', omega1, \
+                xLnew, x1new, xRnew 
             f1.close()
             break
 
-        fLt[tstep] = fL
-        fRt[tstep] = fR
-
         f1new = - (fL + fR)
-        # if tstep < 1000:
-        #     print f1new, x1[tstep]
 #
-        v1[tstep+1] = v1[tstep] + 0.5*((f1old+f1new)/m1) * dt
+        v1new = v1old + 0.5*((f1old+f1new)/m1) * dt
 # #----------------------------------------------------------------------------------
-        UintL[tstep] = AL * np.exp(-alphaL * (x1[tstep] - halfd - xL[tstep]))
-        UintR[tstep] = AR * np.exp(-alphaR * (xR[tstep] - halfd - x1[tstep]))
-        U[tstep] += UintL[tstep]
-        U[tstep] += UintR[tstep]
+        # UintL[tstep] = AL * np.exp(-alphaL * (x1[tstep] - halfd - xL[tstep]))
+        # UintR[tstep] = AR * np.exp(-alphaR * (xR[tstep] - halfd - x1[tstep]))
+        # U[tstep] += UintL[tstep]
+        # U[tstep] += UintR[tstep]
 
-        if tstep > 0:
-            powerL[tstep] = - 0.5 * fL * ((xL[tstep + 1] - xL[tstep]) / dt + v1[tstep])
-            powerR[tstep] = 0.5 * fR * ((xR[tstep + 1] - xR[tstep]) / dt + v1[tstep])
-            powerLsq[tstep] = powerL[tstep] * powerL[tstep]
-            powerRsq[tstep] = powerR[tstep] * powerR[tstep]
+        if tstep > (tsize / 2 - 1):
+            powerL += - 0.5 * fL * ((xLnew - xLold) / dt + v1old)
+            powerR += 0.5 * fR * ((xRnew - xRold) / dt + v1old)
+            K1 += 0.5 * m1 * v1old ** 2
 
-        K1[tstep] = 0.5 * m1 * v1[tstep] ** 2
-        K[tstep] = K1[tstep]
 
         tstep += 1
 
-    return x1, K1, U, K, powerL, powerR, powerLsq, powerRsq 
-
+    return K1, powerL, powerR 
 
 
 if __name__ == '__main__':
@@ -124,11 +106,13 @@ if __name__ == '__main__':
 
     start_time = time.time()
 
+    traj = 2000
+
     tBegin = 0.0
-    tEnd = 250.
-    dt = 0.005
+    tEnd = 100.
+    dt = 0.001
     kB = 0.00198
-    Tpoint = 100000
+    Tpoint = 200000
 
     nL = 8
     omegaDL = 2
@@ -136,7 +120,7 @@ if __name__ == '__main__':
     t_numL = Tpoint
     dt1L = dt
     Ntraj1L = 1
-    temperatureL = 50.0
+    temperatureL = 270.0
 
     nR = 8
     omegaDR = 2
@@ -144,80 +128,50 @@ if __name__ == '__main__':
     t_numR = Tpoint
     dt1R = dt
     Ntraj1R = 1
-    temperatureR = 50.0
+    temperatureR = 200.0
 
     tArray = np.arange(tBegin, tEnd, dt)
     tsize = len(tArray)
-    x_t = np.zeros(tsize)
-    Utraj = np.zeros(tsize)
-    Ktraj = np.zeros(tsize)
-    K1traj = np.zeros(tsize)
-    powerLtraj = np.zeros(tsize)
-    powerRtraj = np.zeros(tsize)
-    powerLsqtraj = np.zeros(tsize)
-    powerRsqtraj = np.zeros(tsize)
-    damper_trajL = np.zeros(tsize)
-    damper_trajR = np.zeros(tsize)
+
+    halftsize = tsize / 2
+    Ktraj = np.zeros(traj)
+    K1traj = np.zeros(traj)
+    K2traj = np.zeros(traj)
+    powerLtraj = np.zeros(traj)
+    powerRtraj = np.zeros(traj)
+    power12traj = np.zeros(traj)
 
     m1 = float(sys.argv[1])
-    traj = 5000
     AL = 1 * 1e6 #  1eV = 23kcal/mol
     alphaL = 5e0
     AR = 1 * 1e6  #  1eV = 23kcal/mol
     alphaR = 5e0
-
+    halfd = 1.0
+    
     p = Pool(processes=SLOTS)# pass the number of core to the Pool so that I know how many cores I can use.
 
-    for x, K1, U, K, powerL, powerR, powerLsq, powerRsq in p.map(single_singletraj, range(traj)):
-        x_t += x
-        K1traj += K1
-        Utraj += U
-        Ktraj += K
-        powerLtraj += powerL
-        powerRtraj += powerR
-        powerLsqtraj += powerLsq
-        powerRsqtraj += powerRsq
+    i = 0
+    for K1, powerL, powerR in p.map(single_singletraj, range(traj)):
+        K1traj[i] = K1 / halftsize
+        powerLtraj[i] = powerL / halftsize
+        powerRtraj[i] = powerR / halftsize
+        i += 1
 
     p.close()
     p.join()
     
 
-    Utraj /= traj
-    Ktraj /= traj
-    K1traj /= traj
-    powerLtraj /= traj
-    powerRtraj /= traj
-    powerLsqtraj /= traj
-    powerRsqtraj /= traj
-
     ##----------
-    NN = tsize / 2
-    # Ksteady = Ktraj[30000:]
-    # Kaver = np.sum(Ksteady)/len(Ksteady)
-    # print Kaver
-    K1steady = K1traj[NN:]
-    K1steady = np.mean(K1steady.reshape(-1, 500), axis=1)  # a very neat answer from StackOverflow
-    T1aver = np.mean(K1steady) * 2 / kB
-    T1std = np.std(K1steady) * 2 / kB
+    T1aver = np.mean(K1traj) * 2 / kB
+    T1std = np.std(K1traj) * 2 / kB
     print 'T1 = ', T1aver, T1std
 
-    PsteadyL = powerLtraj[NN:]
-    PsteadyL = np.mean(PsteadyL.reshape(-1, 500), axis=1)  # a very neat answer from StackOverflow
-    # to average over a length of numbers
-    PsqsteadyL = powerLsqtraj[NN:]
-    JLaver = np.mean(PsteadyL)
-    JLstd = np.std(PsteadyL)
-    JLstd_true = np.sqrt(np.mean(PsqsteadyL) - JLaver**2)
-    print 'heatL = ', JLaver, JLstd, JLstd_true
-
-    PsteadyR = powerRtraj[NN:]
-    PsteadyR = np.mean(PsteadyR.reshape(-1, 500), axis=1)
-    PsqsteadyR = powerRsqtraj[NN:]
-    JRaver = np.mean(PsteadyR)
-    JRstd = np.std(PsteadyR)
-    JRstd_true = np.sqrt(np.mean(PsqsteadyR) - JRaver**2)
-    print 'heatR = ', JRaver, JRstd, JRstd_true
-
+    JLaver = np.mean(powerLtraj)
+    JLstd = np.std(powerLtraj)
+    print 'heatL = ', JLaver, JLstd
+    JRaver = np.mean(powerRtraj)
+    JRstd = np.std(powerRtraj)
+    print 'heatR = ', JRaver, JRstd
 
     run_time = time.time() - start_time
     print 'run time is: ', run_time / 60.
@@ -227,21 +181,16 @@ if __name__ == '__main__':
     filename = 'center-' + str(m1) + time.strftime('-%m-%d-%H%M%S.txt')
     with open(filename, "w") as f:
         f.write("time spent in minutes: %f\n" %(run_time/60))
-        f.write("AL = %f, alphaL = %f\n" %(AL, alphaL))
+        # f.write("AL = %f, alphaL = %f\n" %(AL, alphaL))
         f.write("mass = %f\n" %(m1))
-        # f.write("initial postitions: xL = %f, x1 = %f, xR = %f\n" %(xL[0], x1[0], xR[0]))
+        # f.write("equilibrium length (bond length): %f\n" %(x012))
         f.write("trajectory number: %d\n" %(traj))
         f.write("time_step: %f\n" %(dt))
         f.write("number of steps: %d\n" %(tsize/2))
         f.write("TL = %d, TR = %d\n" %(temperatureL, temperatureR))
         f.write("T1 = %f, T1std = %f\n" %(T1aver, T1std))
-        # f.write("T2 = %f\n" %(T2aver))
-        f.write("JL = %f, STDJL = %f, STDJL_r = %f\n" %(JLaver, JLstd, JLstd_true))
-        f.write("JR = %f, STDJR = %f, STDJR_r = %f\n" %(JRaver, JRstd, JRstd_true))
+        f.write("JL = %f, STDJL = %f\n" %(JLaver, JLstd))
+        f.write("JR = %f, STDJR = %f\n" %(JRaver, JRstd))
 
-    select_out = tsize / 200
-    new_time = tArray[0:-1:select_out]
-    new_K1traj = K1traj[0:-1:select_out]
-
-    filename2 = 'kinetic-singleatom-' + str(str(m1)) + time.strftime('-%m-%d-%H%M%S.txt')
-    np.savetxt(filename2, np.c_[new_time, new_K1traj, new_K1traj * 2 / kB])
+    # filename2 = 'kinetic-singleatom-' + str(str(m1)) + time.strftime('-%m-%d-%H%M%S.txt')
+    # np.savetxt(filename2, np.c_[new_time, new_K1traj, new_K1traj * 2 / kB])

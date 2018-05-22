@@ -134,8 +134,8 @@ if __name__=='__main__':
     traj = 230
 
     tBegin = 0.0
-    tEnd = 1000
-    dt = 0.001
+    tEnd = 10000
+    dt = 0.01
     kB = 0.00198
     Tpoint = 2000000
 
