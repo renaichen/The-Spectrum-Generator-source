@@ -106,16 +106,18 @@ if __name__ == '__main__':
 
     start_time = time.time()
 
-    traj = 46
+    traj = 150
 
     tBegin = 0.0
-    tEnd = 100.
+    tEnd = 1000.
+    # tEnd = float(sys.argv[1])
     dt = 0.001
+    # dt = tEnd * 1e-6
     kB = 0.00198
-    Tpoint = 200000
+    Tpoint = 2e6
 
     nL = 8
-    omegaDL = 2
+    omegaDL = 1.
     massL = 32.
     t_numL = Tpoint
     dt1L = dt
@@ -123,11 +125,11 @@ if __name__ == '__main__':
     temperatureL = 270.0
 
     nR = 8
-    omegaDR = 2
+    omegaDR = 1.
     massR = 32.
     t_numR = Tpoint
     dt1R = dt
-    Ntraj1R = 1
+    Ntraj1R = 2
     temperatureR = 200.0
 
     tArray = np.arange(tBegin, tEnd, dt)
@@ -142,6 +144,7 @@ if __name__ == '__main__':
     power12traj = np.zeros(traj)
 
     m1 = float(sys.argv[1])
+    # m1 = 24.
     omegaL = 1.
     omegaR = 1.
     k1l = m1 * omegaL**2
@@ -185,11 +188,13 @@ if __name__ == '__main__':
 
 ##-----------write-data-out---------
     #filename = time.strftime('center-atom-%m-%d-%H%M%S.txt')
-    filename = 'center-' + str(m1) + time.strftime('-%m-%d-%H%M%S.txt')
+    # filename = 'center-' + str(m1) + time.strftime('-%m-%d-%H%M%S.txt')
+    filename = 'center-' + str(traj) + '-' + str(dt) + time.strftime('-%m-%d-%H%M%S.txt')
     with open(filename, "w") as f:
         f.write("time spent in minutes: %f\n" %(run_time/60))
         # f.write("AL = %f, alphaL = %f\n" %(AL, alphaL))
         f.write("mass = %f\n" %(m1))
+        f.write("omegaDL = %f, omegaDR = %f\n" %(omegaDL, omegaDR))
         # f.write("equilibrium length (bond length): %f\n" %(x012))
         f.write("trajectory number: %d\n" %(traj))
         f.write("time_step: %f\n" %(dt))

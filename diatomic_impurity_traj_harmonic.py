@@ -131,16 +131,16 @@ if __name__=='__main__':
 
     start_time = time.time()
     
-    traj = 46
+    traj = 322
 
     tBegin = 0.0
     tEnd = 1000
-    dt = 0.01
+    dt = 0.001
     kB = 0.00198
-    Tpoint = 200000
+    Tpoint = 2e6
 
     nL = 8
-    omegaDL = 2.
+    omegaDL = 1.
     massL = 32.
     t_numL = Tpoint
     dt1L = dt
@@ -148,7 +148,7 @@ if __name__=='__main__':
     temperatureL = 270.0
 
     nR = 8
-    omegaDR = 2.
+    omegaDR = 1.
     massR = 32.
     t_numR = Tpoint
     dt1R = dt
@@ -165,12 +165,15 @@ if __name__=='__main__':
     powerRtraj = np.zeros(traj)
     power12traj = np.zeros(traj)
 
-    m1 = float(sys.argv[1]) / 2.
-    m2 = float(sys.argv[1]) / 2.
+    # m1 = float(sys.argv[1]) / 2.
+    # m2 = float(sys.argv[1]) / 2.
+    m1 = 12.
+    m2 = 12.
     mu = m1 * m2 / (m1 + m2)
     omegaL = 1.
     omegaR = 1.
-    omega1 = 1.
+    # omega1 = 1.
+    omega1 = float(sys.argv[1])
     k12 = mu * omega1**2
     k1l = m1 * omegaL**2
     k2r = m2 * omegaR**2
@@ -226,15 +229,15 @@ if __name__=='__main__':
     print 'run time is: ', run_time / 60.
 
     ##-----------write-data-out---------
-    #filename = time.strftime('diatomic-%m-%d-%H%M%S.txt')
-    filename = 'diatomic-' + str(m1) + time.strftime('-%m-%d-%H%M%S.txt')
+    # filename = 'diatomic-' + str(m1) + time.strftime('-%m-%d-%H%M%S.txt')
+    filename = 'diatomic-' + str(traj) + '-' + str(omega1) + time.strftime('-%m-%d-%H%M%S.txt')
     with open(filename, "w") as f:
         f.write("time spent in minutes: %f\n" %(run_time/60))
-        f.write("AL = %f, alphaL = %f\n" %(AL, alphaL))
+        # f.write("AL = %f, alphaL = %f\n" %(AL, alphaL))
         f.write("mass = %f\n" %(m1))
         # f.write("equilibrium length (bond length): %f\n" %(x012))
         # f.write("initial postitions: xL = %f, x1 = %f, x2 = %f, xR = %f\n" %(xL[0], x1[0], x2[0], xR[0]))
-        f.write("omegaD = %f, omega_r = %f\n" %(omegaDL, omega1))
+        f.write("omegaDL = %f, omegaL = %f, omega_r = %f\n" %(omegaDL, omegaL, omega1))
         f.write("trajectory number: %d\n" %(traj))
         f.write("time_step: %f\n" %(dt))
         f.write("number of steps: %d\n" %(tsize/2))

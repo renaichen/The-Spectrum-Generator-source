@@ -6,6 +6,7 @@ xleft=()
 #     xleft+=($i)
 # done
 xleft=24
+# xleft=(500 2500 5000)
 
 # xright=()
 # for j in `seq 54.5 -0.1 53.3`
