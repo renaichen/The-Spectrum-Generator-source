@@ -1,7 +1,7 @@
 import numpy as np
 from scipy.integrate import odeint
 import random
-import matplotlib.pyplot as plt
+# import matplotlib.pyplot as plt
 from scipy.fftpack import fft, ifft
 
 
@@ -334,6 +334,7 @@ def fourier_generic(ft, deltat, omegaD, points):
 cor_n8 = np.zeros(n8.sampling/2)
 for j in range(Ntraj):
     cor_n8 += generate_autocorrelation(n8.R_traj[:, j])
+    print j
 cor_n8 /= Ntraj
 
 
@@ -403,44 +404,46 @@ tfn8, yfn8 = fourier_transform(cor_n8, n8.dt)
 # yfn8 /= np.abs(yfn8[0])
 
 
+# # plt.figure()
+# # plt.plot(n2.t[: n2.sampling // 4], cor_n2, label='n2')
+# # plt.figure()
+# # plt.plot(n4.t[: n4.sampling // 2], cor_n4, label='n4')
+# # plt.figure()
+# # plt.plot(n6.t[: n6.sampling // 2], cor_n6, label='n6')
+# # plt.figure()
+# # plt.plot(n8.t[: n8.sampling // 4], cor_n8, label='n8')
+
+# # plt.figure()
+# # # plt.plot(n2.t[: n2.sampling], cor_n2, label='n2')
+# # plt.plot(cor_n2, label='n2')
+# # plt.figure()
+# # # plt.plot(n4.t[: n4.sampling], cor_n4, label='n4')
+# # plt.plot(cor_n4, label='n4')
+# # plt.figure()
+# # # plt.plot(n6.t[: n6.sampling], cor_n6, label='n6')
+# # plt.plot(cor_n6, label='n6')
 # plt.figure()
-# plt.plot(n2.t[: n2.sampling // 4], cor_n2, label='n2')
-# plt.figure()
-# plt.plot(n4.t[: n4.sampling // 2], cor_n4, label='n4')
-# plt.figure()
-# plt.plot(n6.t[: n6.sampling // 2], cor_n6, label='n6')
-# plt.figure()
-# plt.plot(n8.t[: n8.sampling // 4], cor_n8, label='n8')
+# # plt.plot(n8.t[: n8.sampling], cor_n8, label='n8')
+# plt.plot(cor_n8, label='n8')
+# plt.legend()
 
 # plt.figure()
-# # plt.plot(n2.t[: n2.sampling], cor_n2, label='n2')
-# plt.plot(cor_n2, label='n2')
-# plt.figure()
-# # plt.plot(n4.t[: n4.sampling], cor_n4, label='n4')
-# plt.plot(cor_n4, label='n4')
-# plt.figure()
-# # plt.plot(n6.t[: n6.sampling], cor_n6, label='n6')
-# plt.plot(cor_n6, label='n6')
-plt.figure()
-# plt.plot(n8.t[: n8.sampling], cor_n8, label='n8')
-plt.plot(cor_n8, label='n8')
-plt.legend()
+# # plt.plot(omegagrid, yfn2, 'o-', label='n2')
+# # plt.plot(omegagrid, yfn4, 'o-', label='n4')
+# # plt.plot(omegagrid, yfn6, 'o-', label='n6')
+# # plt.plot(omegagrid, yfn8, 'o-', label='n8')
+# # plt.plot(yfn2[: 100], label='n2')
+# # plt.plot(yfn4, label='n4')
+# # plt.plot(yfn6, label='n6')
+# # plt.plot(yfn8[: 100], label='n8')
+# # plt.plot(tfn2, yfn2, 'o-', label='n2')
+# # plt.plot(tfn4, yfn4, 'o-', label='n4')
+# # plt.plot(tfn6, yfn6, 'o-', label='n6')
+# plt.plot(tfn8, yfn8, 'o-', label='n8')
+# plt.plot(tfn8, 1/(1+(tfn8/omegaD)**16), label='analytical:n=8')
+# # plt.figure()
+# # plt.plot(test.t[test.t_num / 4 :], test.R_halflength)
+# plt.legend()
+# plt.show()
 
-plt.figure()
-# plt.plot(omegagrid, yfn2, 'o-', label='n2')
-# plt.plot(omegagrid, yfn4, 'o-', label='n4')
-# plt.plot(omegagrid, yfn6, 'o-', label='n6')
-# plt.plot(omegagrid, yfn8, 'o-', label='n8')
-# plt.plot(yfn2[: 100], label='n2')
-# plt.plot(yfn4, label='n4')
-# plt.plot(yfn6, label='n6')
-# plt.plot(yfn8[: 100], label='n8')
-# plt.plot(tfn2, yfn2, 'o-', label='n2')
-# plt.plot(tfn4, yfn4, 'o-', label='n4')
-# plt.plot(tfn6, yfn6, 'o-', label='n6')
-plt.plot(tfn8, yfn8, 'o-', label='n8')
-plt.plot(tfn8, 1/(1+(tfn8/omegaD)**16), label='analytical:n=8')
-# plt.figure()
-# plt.plot(test.t[test.t_num / 4 :], test.R_halflength)
-plt.legend()
-plt.show()
+np.savetxt('n8FT.txt', np.c_[tfn8,yfn8])
