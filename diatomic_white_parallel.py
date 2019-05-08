@@ -118,12 +118,14 @@ def diatomic_traj(n):
 
 if __name__ == '__main__':
 
-    SLOTS = int(os.getenv('NSLOTS')) # Get the NSLOTS environment variable provided by the scheduler
+    # SLOTS = int(os.getenv('NSLOTS')) # Get the NSLOTS environment variable
+    # provided by the scheduler for sge
+    SLOTS = int(os.getenv('SLURM_NPROCS')) # For SLURM
 
     start_time = time.time()
 
     tBegin = 0.
-    tEnd = 1000
+    tEnd = 100
     dt = 0.001
     tArray = np.arange(tBegin, tEnd, dt)
     tsize = len(tArray)
@@ -164,7 +166,7 @@ if __name__ == '__main__':
     gammaL = 1.076581 / m1
     gammaR = 1.076581 / m1
 
-    traj = 1000
+    traj = 24
 
     p = Pool(processes=SLOTS)# pass the number of core to the Pool so that I know how many cores I can use.
 

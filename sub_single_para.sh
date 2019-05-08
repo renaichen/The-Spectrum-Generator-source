@@ -17,7 +17,7 @@ len=${#xleft[@]}
 
 for i in `seq 1 $len`
 do
-    qsub ~/THE-Spectrum-Generator-Class/src/qsub_single.sh ${xleft[$i-1]} 
+    sbatch ./sbatch_single.sh ${xleft[$i-1]} 
    # sleep 5m
 #    bash justecho.sh ${xleft[$i-1]} ${xright[$i-1]}
 done

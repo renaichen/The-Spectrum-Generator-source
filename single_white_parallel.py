@@ -101,7 +101,9 @@ def single_traj(n):
 
 if __name__ == '__main__':
 
-    SLOTS = int(os.getenv('NSLOTS')) # Get the NSLOTS environment variable provided by the scheduler
+    # SLOTS = int(os.getenv('NSLOTS')) # Get the NSLOTS environment variable
+    # provided by the scheduler for sge
+    SLOTS = int(os.getenv('SLURM_NPROCS')) # For SLURM
 
     start_time = time.time()
 
