@@ -141,7 +141,8 @@ def diatomic_singletraj(n):
 
 if __name__=='__main__':
 
-    SLOTS = int(os.getenv('NSLOTS')) # Get the NSLOTS environment variable provided by the scheduler
+    # SLOTS = int(os.getenv('NSLOTS')) # Get the NSLOTS environment variable provided by the scheduler
+    SLOTS = int(os.getenv('SLURM_NPROCS')) # For SLURM
 
     start_time = time.time()
     
@@ -198,7 +199,7 @@ if __name__=='__main__':
     AR = 1 * 1e6  #  1eV = 23kcal/mol
     alphaR = 5e0
 
-    traj = 45
+    traj = 12
 
     p = Pool(processes=SLOTS)# pass the number of core to the Pool so that I know how many cores I can use.
 

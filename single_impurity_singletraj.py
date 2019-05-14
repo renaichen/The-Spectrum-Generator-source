@@ -113,7 +113,8 @@ def single_singletraj(n):
 
 if __name__ == '__main__':
 
-    SLOTS = int(os.getenv('NSLOTS')) # Get the NSLOTS environment variable provided by the scheduler
+    # SLOTS = int(os.getenv('NSLOTS')) # Get the NSLOTS environment variable provided by the scheduler
+    SLOTS = int(os.getenv('SLURM_NPROCS')) # For SLURM
 
     start_time = time.time()
 
@@ -153,7 +154,7 @@ if __name__ == '__main__':
     damper_trajR = np.zeros(tsize)
 
     m1 = float(sys.argv[1])
-    traj = 5000
+    traj = 10
     AL = 1 * 1e6 #  1eV = 23kcal/mol
     alphaL = 5e0
     AR = 1 * 1e6  #  1eV = 23kcal/mol
