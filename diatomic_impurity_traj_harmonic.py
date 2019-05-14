@@ -131,7 +131,7 @@ if __name__=='__main__':
 
     start_time = time.time()
     
-    traj = 322
+    traj = 230
 
     tBegin = 0.0
     tEnd = 1000
@@ -244,9 +244,9 @@ if __name__=='__main__':
         f.write("TL = %d, TR = %d\n" %(temperatureL, temperatureR))
         f.write("T1 = %f, T1std = %f\n" %(T1aver, T1std))
         f.write("T2 = %f, T2std = %f\n" %(T2aver, T2std))
-        f.write("JL = %f, STDJL = %f\n" %(JLaver, JLstd))
-        f.write("J12 = %f, STDJ12 = %f\n" %(J12aver, J12std))
-        f.write("JR = %f, STDJR = %f\n" %(JRaver, JRstd))
+        f.write("JL = %.4E, STDJL = %.4E\n" %(JLaver, JLstd))
+        f.write("J12 = %.4E, STDJ12 = %.4E\n" %(J12aver, J12std))
+        f.write("JR = %.4E, STDJR = %.4E\n" %(JRaver, JRstd))
 
     # #filename2 = time.strftime('heatflux-diatomic-%m-%d-%H%M%S.txt')
     # filename2 = 'heatflux-diatomic-' + str(m1) + time.strftime('-%m-%d-%H%M%S.txt')
