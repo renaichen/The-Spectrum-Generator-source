@@ -132,7 +132,7 @@ if __name__=='__main__':
 
     start_time = time.time()
     
-    traj = 23
+    traj = 24
 
     tBegin = 0.0
     tEnd = 1000

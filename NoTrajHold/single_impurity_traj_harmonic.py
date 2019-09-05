@@ -34,9 +34,11 @@ def single_singletraj(n):
     powerL = 0.0
     powerR = 0.0
 
-    xLeq = 46.
+    # xLeq = 46.
+    xLeq = 2.
     x1new = 50.
-    xReq = 54.
+    # xReq = 54.
+    xReq = 98.
     xLnew = xLeq
     xRnew = xReq
 
@@ -75,7 +77,7 @@ def single_singletraj(n):
 
         if x1new < xLnew or x1new > xRnew:
             f1 = open('wrong-single-' + time.strftime('-%m-%d-%H%M%S.txt'), 'w')
-            print >> f1, 'error: position disorder, exiting...', omega1, \
+            print >> f1, 'error: position disorder, exiting...', omegaL, \
                 xLnew, x1new, xRnew 
             f1.close()
             break
@@ -107,12 +109,12 @@ if __name__ == '__main__':
 
     start_time = time.time()
 
-    traj = 15
+    traj = 24
 
     tBegin = 0.0
-    tEnd = 1000.
+    tEnd = 100.
     # tEnd = float(sys.argv[1])
-    dt = 0.001
+    dt = 0.0001
     # dt = tEnd * 1e-6
     kB = 0.00198
     Tpoint = 2e6
@@ -144,10 +146,12 @@ if __name__ == '__main__':
     powerRtraj = np.zeros(traj)
     power12traj = np.zeros(traj)
 
-    m1 = float(sys.argv[1])
-    # m1 = 24.
-    omegaL = 1.
-    omegaR = 1.
+    # m1 = float(sys.argv[1])
+    m1 = 24.
+    # omegaL = 1.
+    # omegaR = 1.
+    omegaL = float(sys.argv[1])
+    omegaR = float(sys.argv[1])
     k1l = m1 * omegaL**2
     k1r = m1 * omegaR**2
     x012 = 2.0

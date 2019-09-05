@@ -97,10 +97,10 @@ if __name__ == '__main__':
 
     start_time = time.time()
 
-    traj = 4
+    traj = 40
 
     tBegin = 0.
-    tEnd = 10000
+    tEnd = 100000
     dt = 0.01
     tArray = np.arange(tBegin, tEnd, dt)
     tsize = len(tArray)

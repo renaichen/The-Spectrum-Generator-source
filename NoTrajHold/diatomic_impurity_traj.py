@@ -135,10 +135,10 @@ if __name__=='__main__':
     traj = 23
 
     tBegin = 0.0
-    tEnd = 100
+    tEnd = 10000
     dt = 0.01
     kB = 0.00198
-    Tpoint = 20000
+    Tpoint = 2000000
 
     nL = 8
     omegaDL = 2.
